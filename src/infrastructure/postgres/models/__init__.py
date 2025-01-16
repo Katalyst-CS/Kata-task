@@ -1,3 +1,3 @@
-from custom import CustomTaskField
-from task import TaskModel
-from watchers import WhatchersModels
+from infrastructure.postgres.models.task import TaskModel
+from infrastructure.postgres.models.custom import CustomTaskField
+from infrastructure.postgres.models.watchers import WhatchersModels

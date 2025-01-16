@@ -1,7 +1,7 @@
 from peewee import *
 from infrastructure.postgres.connection import database
 
-class TaskModel:
+class TaskModel(Model):
     
     id = UUIDField(primary_key=True)
     title = CharField(max_length=255)
@@ -13,3 +13,4 @@ class TaskModel:
 
     class Meta:
         database = database
+        table_name = "kATA-TBL-1000"
