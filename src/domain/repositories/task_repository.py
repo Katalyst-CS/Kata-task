@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dommain.entities import TaskEntity
+from domain.entities import TaskEntity
 
 class TaskRepository:
 
@@ -16,7 +16,11 @@ class TaskRepository:
         pass
 
     @abstractmethod
-    def add_watcher(self, task_id, user_id):
+    def add_watcher(self, task_id, user_id) -> bool:
+        pass
+
+    @abstractmethod
+    def list_watchers(self, task_id):
         pass
 
     @abstractmethod
