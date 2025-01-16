@@ -1,4 +1,4 @@
-from dommain.entities import TaskEntity
+from domain.entities import TaskEntity
 from infrastructure.postgres.models import TaskModel
 
 class TaskMapper:
@@ -23,4 +23,13 @@ class TaskMapper:
         entity.project_id = model.project_id
         entity.start_date = model.start_date
         entity.end_date = model.end_date
+        metadata = {}
+        for custom_field in model.custom_fields:
+            metadata[custom_field.key] = {
+                'value': custom_field.value,
+                'id': custom_field.id
+            }
+        watchers = [watcher.user_id for watcher in model.watchers]
+        entity.metadata = metadata
+        entity.watchers = watchers
         return entity
