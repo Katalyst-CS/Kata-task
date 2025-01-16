@@ -1,17 +1,21 @@
-from dommain.entities.task import TaskEntity
-from dommain.repositories.task_repository import TaskRepository
+from domain.entities.task import TaskEntity
+from domain.repositories.task_repository import TaskRepository
 from infrastructure.postgres.mappers.task_mapper import TaskMapper
 from infrastructure.postgres.models import WhatchersModels, TaskModel
-from dommain.exception import TaskNotFoundError
+from domain.exception import TaskNotFoundError
 from datetime import datetime
 from uuid import uuid4
 
 class PostgrestTaskRepository(TaskRepository):
 
-    def add_watcher(self, task_id, user_id):
+    def __exist_task__(self, task_id) -> bool:
         task = TaskModel.select().where(TaskModel.id == task_id).get()
         if task is None:
             raise TaskNotFoundError("La tarea no existe")
+        return True
+
+    def add_watcher(self, task_id, user_id):
+        self.__exist_task__(task_id)
         watcher = WhatchersModels()
         watcher.user_id = user_id
         watcher.task_id = task_id
@@ -20,9 +24,7 @@ class PostgrestTaskRepository(TaskRepository):
         return True
     
     def set_watcher(self, task_id, users):
-        task = TaskModel.select().where(TaskModel.id == task_id).get()
-        if task is None:
-            raise TaskNotFoundError("La tarea no existe")
+        self.__exist_task__(task_id)
         for user in users:
             watcher = WhatchersModels()
             watcher.user_id = user
@@ -43,3 +45,11 @@ class PostgrestTaskRepository(TaskRepository):
         mapper = TaskMapper()
         entity = mapper.model2domain(model)
         return entity
+    
+    def list_watchers(self, task_id):
+        print("Checking task")
+        self.__exist_task__(task_id)
+        model = TaskModel.select().where(TaskModel.id == task_id).get()
+        mapper = TaskMapper()
+        entity = mapper.model2domain(model)
+        return entity.watchers
