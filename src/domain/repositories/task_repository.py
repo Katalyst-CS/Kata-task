@@ -8,7 +8,7 @@ class TaskRepository:
         pass
 
     @abstractmethod
-    def create(self, entity: TaskEntity):
+    def create(self, entity: TaskEntity) -> TaskEntity:
         pass
 
     @abstractmethod

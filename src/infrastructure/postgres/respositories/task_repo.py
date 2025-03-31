@@ -38,7 +38,9 @@ class PostgrestTaskRepository(TaskRepository):
         model = mapper.domain2model(entity)
         if model.id is None:
             model.id = uuid4()
-        return model.save() == 1
+        model = TaskModel.get_by_id(entity.id)
+        entity_out = mapper.model2domain(model)
+        return entity_out
     
     def get_by_id(self, id) -> TaskEntity:
         model = TaskModel.select().where(TaskModel.id == id).get()
